@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>To. You — 편지</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #f7f4ef;
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Noto Sans TC", sans-serif;
+    }
+
+    /* 嵌入你原本的 Carrd 網站 */
+    #carrd-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* 進站信封封面遮罩 */
+    #welcome-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(247, 244, 239, 0.96);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+      padding: 24px;
+      text-align: center;
+    }
+
+    #welcome-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .envelope-icon {
+      font-size: 42px;
+      margin-bottom: 16px;
+      animation: float 2.5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .welcome-title {
+      color: #4a453e;
+      font-size: 18px;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .welcome-sub {
+      color: #8c8377;
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+
+    .open-btn {
+      background-color: #5c5449;
+      color: #ffffff;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 15px;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(92, 84, 73, 0.22);
+      transition: transform 0.2s ease;
+    }
+
+    .open-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* 右上角迷你音樂開關 */
+    #music-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 9999;
+      background: rgba(92, 84, 73, 0.75);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 讀取同資料夾的 music.mp3 -->
+  <audio id="bgm" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- 進站信封封面 -->
+  <div id="welcome-overlay">
+    <div class="envelope-icon">✉️</div>
+    <div class="welcome-title">너희한테 쓰는 편지</div>
+    <div class="welcome-sub">클릭하면 편지가 열립니다 (배경음악 포함)</div>
+    <button class="open-btn" onclick="startExperience()">편지 열기 · 打開信件</button>
+  </div>
+
+  <!-- 右上角迷你開關 -->
+  <button id="music-toggle" onclick="toggleMusic()">🔊 BGM ON</button>
+
+  <!-- 載入你的 Carrd 網站 -->
+  <iframe id="carrd-frame" src="https://881artemis.carrd.co" title="Letter"></iframe>
+
+  <script>
+    const bgm = document.getElementById('bgm');
+    const overlay = document.getElementById('welcome-overlay');
+    const toggleBtn = document.getElementById('music-toggle');
+
+    function startExperience() {
+      bgm.volume = 0.7;
+      bgm.play().catch(err => console.log('播放需要互動:', err));
+      overlay.classList.add('hidden');
+      toggleBtn.style.display = 'flex';
+    }
+
+    function toggleMusic() {
+      if (bgm.paused) {
+        bgm.play();
+        toggleBtn.innerHTML = '🔊 BGM ON';
+      } else {
+        bgm.pause();
+        toggleBtn.innerHTML = '🔇 BGM OFF';
+      }
+    }
+  </script>
+</body>
+</html>
